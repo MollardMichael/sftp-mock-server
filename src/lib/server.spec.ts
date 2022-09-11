@@ -40,6 +40,28 @@ test.serial(
 );
 
 test.serial(
+  'can connect to the server with a client using keyboard',
+  async (t) => {
+    // GIVEN
+    const data = await setup({
+      port: String(port),
+    });
+
+    // WHEN
+    await data.client.connect({
+      host: '127.0.0.1',
+      port,
+      username: 'test',
+      tryKeyboard: true,
+    });
+
+    // THEN
+    await cleanup(data);
+    t.pass();
+  }
+);
+
+test.serial(
   'cannot connect to the server with the wrong password',
   async (t) => {
     // GIVEN
