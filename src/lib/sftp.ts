@@ -9,7 +9,7 @@ import {
   utils,
 } from 'ssh2';
 
-import { Context } from './server';
+import { Context } from './types';
 
 type File = Attributes & {
   data: Buffer;

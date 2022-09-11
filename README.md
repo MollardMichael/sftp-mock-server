@@ -1,7 +1,7 @@
-# trie-ts
+# sftp-mock-server
 
 ![license](https://img.shields.io/github/license/MollardMichael/sftp-mock-server.svg)
-[![codecov](https://codecov.io/gh/MollardMichael/sftp-mock-server/branch/master/graph/badge.svg?token=OI6LKGG1R7)](https://codecov.io/gh/MollardMichael/trie-ts)
+[![codecov](https://codecov.io/gh/MollardMichael/sftp-mock-server/branch/master/graph/badge.svg?token=OI6LKGG1R7)](https://codecov.io/gh/MollardMichael/sftp-mock-server)
 ![Build Status](https://github.com/MollardMichael/sftp-mock-server/actions/workflows/push.yml/badge.svg)
 
 This repository is aimed to provide you with the means to setup and interact with a small sftp server that you can use to run end to end tests in an application using [ssh2-sftp-client](https://www.npmjs.com/package/ssh2-sftp-client) or another node based sftp client. The package is mostly tested against ssh2-sftp-client
@@ -36,11 +36,60 @@ yarn add -D @micham/sftp-mock-server
 #### Create a new SFTP server
 
 ```typescript
-
+const mockServer = await createSftpMockServer({
+  port: '9999',
+  hostname: '127.0.0.1',
+  debug: (msg: string) => logger.debug(msg),
+});
 ```
 
-#### Add a file to the SFTP server
+#### Connect using a private key
 
 ```typescript
+const mockServer = await createSftpMockServer({
+  port: '9999',
+  hostname: '127.0.0.1',
+  debug: (msg: string) => logger.debug(msg),
+  users: {
+    alice: {
+      publicKey: clientPublicKey,
+    },
+  },
+});
 
+await data.client.connect({
+  host: '127.0.0.1',
+  port: 9999,
+  username: 'test',
+  privateKey: clientPrivateKey,
+});
+```
+
+#### Write/Read a file to the SFTP server
+
+```typescript
+import Client from 'ssh2-sftp-client';
+
+const mockServer = await createSftpMockServer({
+  port: '9999',
+  hostname: '127.0.0.1',
+  debug: (msg: string) => logger.debug(msg),
+  users: {
+    alice: {
+      password: 'password',
+      publicKey: clientPublicKey,
+    },
+  },
+});
+
+const client = new Client();
+await client.connect({
+  host: '127.0.0.1',
+  port: 9999,
+  username: 'test',
+  password: 'test',
+});
+
+await client.put(Buffer.from('File content'), 'tmp/data.txt');
+const content = await client.get('tmp/data.txt');
 ```

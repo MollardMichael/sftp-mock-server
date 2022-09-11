@@ -1,11 +1,11 @@
 {
-  "name": "@micham/trie-ts",
+  "name": "@micham/sftp-mock-server",
   "version": "0.0.2",
-  "description": "Implementation of trie with search and hasPrefix",
+  "description": "Implementation sftp server on node to use in tests",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/MollardMichael/trie-ts",
+  "repository": "https://github.com/MollardMichael/sftp-mock-server",
   "license": "MIT",
   "keywords": [],
   "scripts": {

@@ -1,3 +1,6 @@
+/**
+ * /!\ Never use these RSA key in your real application.
+ */
 export const serverPrivateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQCCOt/f5nQfm/LB2LwFpqOg0og4gesmjgfbIzwFAjogNhqm/K5M
 vw9qdAt6kmxsiCm3DFNgHmTbOQdggY53C+ekqGfW6R6WGl+iRe7QXm/Qa96aE1ok
