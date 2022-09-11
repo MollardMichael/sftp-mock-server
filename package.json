@@ -46,6 +46,8 @@
     "@ava/typescript": "3.0.1",
     "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@types/node": "18.7.16",
+    "@types/ssh2": "1.11.5",
+    "@types/ssh2-sftp-client": "7.1.0",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
     "ava": "4.3.3",
@@ -62,7 +64,9 @@
     "nyc": "15.1.0",
     "open-cli": "7.0.1",
     "prettier": "2.7.1",
+    "ssh2-sftp-client": "9.0.4",
     "standard-version": "9.5.0",
+    "ts-essentials": "9.3.0",
     "ts-node": "10.9.1",
     "typedoc": "0.23.14",
     "typescript": "4.8.3"
@@ -97,5 +101,8 @@
     "exclude": [
       "**/*.spec.js"
     ]
+  },
+  "dependencies": {
+    "ssh2": "^1.11.0"
   }
 }

@@ -23,7 +23,10 @@
     "sandboxed",
     "transpiled",
     "typedoc",
-    "untracked"
+    "untracked",
+    "hostbased",
+    "tcpip",
+    "streamlocal"
   ],
   "flagWords": [],
   "ignorePaths": [
