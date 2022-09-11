@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/MollardMichael/sftp-mock-server/compare/v0.0.3...v0.0.4) (2022-09-11)
+
+
+### Features
+
+* add ability to list directory ([4debe6c](https://github.com/MollardMichael/sftp-mock-server/commit/4debe6cb622e929bdb4bcfd590fd0ed036cf1868))
+
 ### 0.0.3 (2022-09-11)
 
 
