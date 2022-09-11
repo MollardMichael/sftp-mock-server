@@ -21,6 +21,7 @@ export const handleSftpSession =
   (ctx: Context) =>
   (accept: AcceptSftpConnection, _reject: RejectConnection) => {
     const files: Record<string, File> = {};
+    const readDirectories: Record<string, boolean> = {};
     const sftp = accept();
     ctx.debug('SFTP Session established with client');
     sftp.on('ready', () => ctx.debug('Client is ready for some SFTP fun!'));
@@ -55,6 +56,46 @@ export const handleSftpSession =
     sftp.on('CLOSE', (reqId, _handle) => {
       sftp.status(reqId, utils.sftp.STATUS_CODE.OK);
       ctx.debug('Closing file');
+    });
+    sftp.on('OPENDIR', (reqId, path) => {
+      ctx.debug(`Client tries to open the directory with path ${path}`);
+      if (
+        Object.keys(files).some((filePath) => filePath.startsWith(`${path}/`))
+      ) {
+        const handle = Buffer.from(path);
+        return sftp.handle(reqId, handle);
+      }
+
+      return sftp.status(reqId, utils.sftp.STATUS_CODE.NO_SUCH_FILE);
+    });
+    sftp.on('READDIR', (reqId, handle) => {
+      const path = handle.toString();
+      if (readDirectories[path]) {
+        delete readDirectories[path];
+        return sftp.status(reqId, utils.sftp.STATUS_CODE.EOF);
+      }
+
+      ctx.debug(`client trying to list ${path}`);
+      const filePaths = Object.keys(files).filter((filePath) =>
+        filePath.match(`${path}/[^/]*`)
+      );
+      readDirectories[path] = true;
+
+      return sftp.name(
+        reqId,
+        filePaths.map((filePath) => ({
+          filename: filePath,
+          longname: filePath,
+          attrs: {
+            atime: files[filePath].atime,
+            mtime: files[filePath].mtime,
+            gid: files[filePath].gid,
+            uid: files[filePath].uid,
+            mode: files[filePath].mode,
+            size: files[filePath].size,
+          },
+        }))
+      );
     });
   };
 

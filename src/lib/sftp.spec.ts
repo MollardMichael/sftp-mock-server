@@ -62,3 +62,31 @@ test.serial('can move and delete file', async (t) => {
 
   await cleanup(data);
 });
+
+test.serial('can read from directory', async (t) => {
+  // GIVEN
+  const data = await setup({
+    port: String(port),
+    users: {
+      test: { password: 'test' },
+    },
+  });
+  await data.client.connect({
+    host: '127.0.0.1',
+    port,
+    username: 'test',
+    password: 'test',
+  });
+  const content = 'My file content is awesome';
+
+  // WHEN
+  await data.client.put(Buffer.from(content), '/test/file.txt');
+  const files = await data.client.list('/test');
+
+  // THEN
+  t.is(files.length, 1);
+
+  t.throwsAsync(() => data.client.list('/unknown'));
+
+  await cleanup(data);
+});
