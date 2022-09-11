@@ -4,7 +4,9 @@
 [![codecov](https://codecov.io/gh/MollardMichael/sftp-mock-server/branch/master/graph/badge.svg?token=OI6LKGG1R7)](https://codecov.io/gh/MollardMichael/sftp-mock-server)
 ![Build Status](https://github.com/MollardMichael/sftp-mock-server/actions/workflows/push.yml/badge.svg)
 
-This repository is aimed to provide you with the means to setup and interact with a small sftp server that you can use to run end to end tests in an application using [ssh2-sftp-client](https://www.npmjs.com/package/ssh2-sftp-client) or another node based sftp client. The package is mostly tested against ssh2-sftp-client
+This repository is aimed to provide you with the means to setup and interact with a small sftp server that you can use to run end to end tests in an application using [ssh2-sftp-client](https://www.npmjs.com/package/ssh2-sftp-client) or another node based sftp client. The package is mostly tested against ssh2-sftp-client.
+
+You can check out the API reference [here](https://mollardmichael.github.io/sftp-mock-server/)
 
 ## Why should I use this library?
 
