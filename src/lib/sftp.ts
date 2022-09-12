@@ -17,10 +17,11 @@ type File = Attributes & {
   handleId: string;
 };
 
+const files: Record<string, File> = {};
+
 export const handleSftpSession =
   (ctx: Context) =>
   (accept: AcceptSftpConnection, _reject: RejectConnection) => {
-    const files: Record<string, File> = {};
     const readDirectories: Record<string, boolean> = {};
     const sftp = accept();
     ctx.debug('SFTP Session established with client');
@@ -41,6 +42,7 @@ export const handleSftpSession =
       const postBuffer = file.data.subarray(offset, file.data.length);
       const result = Buffer.concat([preBuffer, data, postBuffer]);
       file.data = result;
+      file.size = result.length;
       ctx.debug(`Write to file at offset ${offset}: ${data.toString()}`);
       sftp.status(reqId, utils.sftp.STATUS_CODE.OK);
     });
@@ -69,7 +71,7 @@ export const handleSftpSession =
       return sftp.status(reqId, utils.sftp.STATUS_CODE.NO_SUCH_FILE);
     });
     sftp.on('READDIR', (reqId, handle) => {
-      const path = handle.toString();
+      const path: string = handle.toString();
       if (readDirectories[path]) {
         delete readDirectories[path];
         return sftp.status(reqId, utils.sftp.STATUS_CODE.EOF);
@@ -104,7 +106,7 @@ function handleSftpOpen(
   ctx: Context,
   sftp: SFTPWrapper
 ): (reqId: number, filename: string, flags: number, attrs: Attributes) => void {
-  return (reqId, filename, _flags, _attrs) => {
+  return (reqId, filename, flags, _attrs) => {
     let file = files[filename];
     if (!file) {
       ctx.debug('create handle for new file');
@@ -123,6 +125,11 @@ function handleSftpOpen(
       files[filename] = newFile;
       file = newFile;
     }
+
+    if (utils.sftp.flagsToString(flags)?.includes('w')) {
+      files[filename].data = Buffer.from('');
+    }
+
     ctx.debug(`opened file handle ${file.handleId}`);
     sftp.handle(reqId, Buffer.from(file.handleId));
   };

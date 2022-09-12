@@ -84,7 +84,8 @@ test.serial('can read from directory', async (t) => {
   const files = await data.client.list('/test');
 
   // THEN
-  t.is(files.length, 1);
+
+  t.truthy(files.find((f) => f.name === '/test/file.txt'));
 
   t.throwsAsync(() => data.client.list('/unknown'));
 
