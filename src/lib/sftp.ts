@@ -86,8 +86,8 @@ export const handleSftpSession =
       return sftp.name(
         reqId,
         filePaths.map((filePath) => ({
-          filename: filePath,
-          longname: filePath,
+          filename: filePath.split('/').slice(-1)[0],
+          longname: filePath.split('/').slice(-1)[0],
           attrs: {
             atime: files[filePath].atime,
             mtime: files[filePath].mtime,
